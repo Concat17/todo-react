@@ -1,0 +1,10 @@
+.note-title{
+  width: 100%;
+
+  text-align: center;
+
+  /* background-color: #cc0404; */
+  background: linear-gradient(150deg, rgba(2,0,36,1) 0%, rgba(121,9,9,1) 50%, rgb(207, 5, 5) 100%);
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}

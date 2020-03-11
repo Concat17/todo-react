@@ -1,0 +1,20 @@
+.note-wrapper{
+  position: relative;
+  top: 2%;
+  left: 2%; 
+
+  width: 220px;  
+
+  /* border-radius: 20%; 
+  border: 1px solid white; */
+
+  display: grid;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas: "note-title"
+                       "todo-list"
+                       "note-footer";
+} 
+
+.note-title{grid-area: note-title;}
+.todo-list{grid-area: todo-list;}
+.note-footer{grid-area: note-footer;}

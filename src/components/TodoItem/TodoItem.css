@@ -1,0 +1,9 @@
+.todo-item{
+  min-height: 50px;
+  border: 1px ridge rgb(155, 60, 60); 
+
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+
+  text-align: center;
+}
