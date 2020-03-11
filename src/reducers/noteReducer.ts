@@ -34,7 +34,7 @@ export const noteReducer = (
           {
             id: state.todos[state.todos.length - 1].id + 1,
             name: action.payload.name,
-            content: action.payload.id,
+            content: action.payload.content,
             priority: action.payload.priority
           }
         ]

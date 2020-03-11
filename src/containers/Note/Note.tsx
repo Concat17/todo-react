@@ -8,13 +8,14 @@ import NoteFooter from "../../components/NoteFooter/NoteFooter";
 import NoteTitle from "../../components/NoteTitle/NoteTitle";
 import TodoList from "../../components/TodoList/TodoList";
 import AddTodoButton from "../../components/AddTodoButton/AddTodoButton";
+import EditableTodo from "../../components/EditableTodo/EditableTodo";
 
 import "./Note.css";
 
 interface NoteContainerState {
-  id: number;
-  title: string;
-  todos: MyTypes.TodoModel[];
+  isEditable: boolean;
+  editableName?: string;
+  editableContent?: string;
 }
 
 interface NoteContainerProps {
@@ -37,6 +38,10 @@ class NoteContainer extends React.Component<
 > {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isEditable: false
+    };
   }
   // handleButtonClick = () => {
   //   this.props.addTodo(this.state.todoInput);
@@ -55,7 +60,16 @@ class NoteContainer extends React.Component<
   };
 
   handleAddTodoButtonOnClick = () => {
-    this.props.addTodo(3, "f", "3", "e");
+    this.setState({
+      isEditable: !this.state.isEditable
+    });
+  };
+
+  handleEditable = (name, content) => {
+    this.props.addTodo(3, name, content, "e");
+    this.setState({
+      isEditable: false
+    });
   };
 
   render() {
@@ -64,7 +78,12 @@ class NoteContainer extends React.Component<
       <div className="note-wrapper">
         <NoteTitle onClick={this.handleTitleOnClick} title={this.props.title} />
         <TodoList todos={this.props.todos} />
-        <AddTodoButton onClick={this.handleAddTodoButtonOnClick} />
+        {this.state.isEditable ? (
+          <EditableTodo handleSave={this.handleEditable} />
+        ) : (
+          <AddTodoButton onClick={this.handleAddTodoButtonOnClick} />
+        )}
+        {/* <AddTodoButton onClick={this.handleAddTodoButtonOnClick} /> */}
         <NoteFooter />
       </div>
     );
