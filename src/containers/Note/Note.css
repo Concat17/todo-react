@@ -9,12 +9,14 @@
   border: 1px solid white; */
 
   display: grid;
-  grid-template-rows: 50px 1fr 50px;
+  grid-template-rows: 50px 1fr 50px 50px;
   grid-template-areas: "note-title"
                        "todo-list"
+                       "add-todo-button"
                        "note-footer";
 } 
 
 .note-title{grid-area: note-title;}
 .todo-list{grid-area: todo-list;}
 .note-footer{grid-area: note-footer;}
+.add-todo-button{grid-area: add-todo-button}

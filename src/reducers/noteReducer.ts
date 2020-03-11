@@ -8,13 +8,13 @@ export const initialState: MyTypes.NoteModel = {
     {
       id: 1,
       name: "Learn React",
-      content: "Learfdfdfn React",
+      content: "All week learn React",
       priority: "High"
     },
     {
       id: 2,
       name: "Buy food",
-      content: "Bufffy food",
+      content: "Buy many sweents and drinks",
       priority: "Normal"
     }
   ]

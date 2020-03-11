@@ -7,6 +7,7 @@ import { actionTypes } from "../../actions";
 import NoteFooter from "../../components/NoteFooter/NoteFooter";
 import NoteTitle from "../../components/NoteTitle/NoteTitle";
 import TodoList from "../../components/TodoList/TodoList";
+import AddTodoButton from "../../components/AddTodoButton/AddTodoButton";
 
 import "./Note.css";
 
@@ -50,8 +51,11 @@ class NoteContainer extends React.Component<
 
   handleTitleOnClick = () => {
     this.props.addTodo(3, "f", "3", "e");
-
     let a = 77;
+  };
+
+  handleAddTodoButtonOnClick = () => {
+    this.props.addTodo(3, "f", "3", "e");
   };
 
   render() {
@@ -60,6 +64,7 @@ class NoteContainer extends React.Component<
       <div className="note-wrapper">
         <NoteTitle onClick={this.handleTitleOnClick} title={this.props.title} />
         <TodoList todos={this.props.todos} />
+        <AddTodoButton onClick={this.handleAddTodoButtonOnClick} />
         <NoteFooter />
       </div>
     );
@@ -68,8 +73,6 @@ class NoteContainer extends React.Component<
 
 const MapStateToProps = (store: MyTypes.ReducerState) => {
   return {
-    // count: store.todo.count,
-    // todoList: store.todo.list
     id: store.todo.id,
     title: store.todo.title,
     todos: store.todo.todos
