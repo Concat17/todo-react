@@ -13,7 +13,6 @@ interface TodoListProps {
 const TodoList: React.FunctionComponent<TodoListProps> = (
   props: TodoListProps
 ) => {
-  let a = 3;
   return (
     <ul className="todo-list">
       {props.todos.map(({ id, name, content, priority }) => {

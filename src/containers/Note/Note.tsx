@@ -18,22 +18,21 @@ interface NoteContainerState {
   editableContent?: string;
 }
 
-interface NoteContainerProps {
-  // notedate?: MyTypes.NoteModel;
-  id: number;
-  title: string;
-  todos: MyTypes.TodoModel[];
+interface NoteConnectedProps {
   addTodo: (
     id: number,
     name: string,
     content: string,
     priority: string
   ) => object;
-  deleteTodo: (idx: number) => object;
+}
+
+interface NoteOwnProps {
+  noteData: MyTypes.NoteModel;
 }
 
 class NoteContainer extends React.Component<
-  NoteContainerProps,
+  NoteOwnProps & NoteConnectedProps,
   NoteContainerState
 > {
   constructor(props) {
@@ -43,21 +42,8 @@ class NoteContainer extends React.Component<
       isEditable: false
     };
   }
-  // handleButtonClick = () => {
-  //   this.props.addTodo(this.state.todoInput);
-  //   this.setState({
-  //     todoInput: ""
-  //   });
-  // };
 
-  handleDeleteButtonClick = (idx: number) => {
-    this.props.deleteTodo(idx);
-  };
-
-  handleTitleOnClick = () => {
-    this.props.addTodo(3, "f", "3", "e");
-    let a = 77;
-  };
+  handleTitleOnClick = () => {};
 
   handleAddTodoButtonOnClick = () => {
     this.setState({
@@ -66,33 +52,34 @@ class NoteContainer extends React.Component<
   };
 
   handleEditable = (name, content) => {
-    this.props.addTodo(3, name, content, "e");
+    this.props.addTodo(this.props.noteData.id, name, content, "e");
     this.setState({
       isEditable: false
     });
   };
 
   render() {
-    let as = this.props;
     return (
       <div className="note-wrapper">
-        <NoteTitle onClick={this.handleTitleOnClick} title={this.props.title} />
-        <TodoList todos={this.props.todos} />
+        <NoteTitle
+          onClick={this.handleTitleOnClick}
+          title={this.props.noteData.title}
+        />
+        <TodoList todos={this.props.noteData.todos} />
         {this.state.isEditable ? (
           <EditableTodo handleSave={this.handleEditable} />
         ) : (
           <AddTodoButton onClick={this.handleAddTodoButtonOnClick} />
         )}
-        {/* <AddTodoButton onClick={this.handleAddTodoButtonOnClick} /> */}
         <NoteFooter />
       </div>
     );
   }
 }
 
-const MapStateToProps = (store: MyTypes.ReducerState) => {
+const MapStateToProps = (store: MyTypes.ReducerState, props: NoteOwnProps) => {
   return {
-    id: store.todo.id,
+    id: props.noteData.id,
     title: store.todo.title,
     todos: store.todo.todos
   };
@@ -103,9 +90,9 @@ const MapDispatchToProps = (dispatch: Dispatch<MyTypes.RootAction>) => ({
     dispatch({
       type: actionTypes.ADD,
       payload: { id, name, content, priority }
-    }),
-  deleteTodo: (idx: number) =>
-    dispatch({ type: actionTypes.DELETE, payload: idx })
+    })
 });
 
 export default connect(MapStateToProps, MapDispatchToProps)(NoteContainer);
+
+//export default NoteContainer;

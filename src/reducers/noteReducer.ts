@@ -25,24 +25,23 @@ export const noteReducer = (
   action: MyTypes.RootAction
 ) => {
   switch (action.type) {
-    case actionTypes.ADD: {
-      let newState = {
-        id: state.id,
-        title: state.title,
-        todos: [
-          ...state.todos,
-          {
-            id: state.todos[state.todos.length - 1].id + 1,
-            name: action.payload.name,
-            content: action.payload.content,
-            priority: action.payload.priority
-          }
-        ]
-      };
-      return newState;
-    }
+    // case actionTypes.ADD: {
+    //   let newState = {
+    //     id: action.payload.id,
+    //     title: state.title,
+    //     todos: [
+    //       ...state.todos,
+    //       {
+    //         id: state.todos[state.todos.length - 1].id + 1,
+    //         name: action.payload.name,
+    //         content: action.payload.content,
+    //         priority: action.payload.priority
+    //       }
+    //     ]
+    //   };
+    //   return newState;
+    // }
     default: {
-      console.log("default");
       return state;
     }
   }
