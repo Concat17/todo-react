@@ -18,7 +18,8 @@ const TodoList: React.FunctionComponent<TodoListProps> = (
       {props.todos.map(({ id, name, content, priority }) => {
         return (
           <TodoItem
-            key={id}
+            key={`todo-${id}`}
+            id={id.toString()}
             name={name}
             content={content}
             priority={priority}

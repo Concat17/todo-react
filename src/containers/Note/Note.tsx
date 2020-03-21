@@ -13,6 +13,10 @@ import EditableTodo from "../../components/EditableTodo/EditableTodo";
 import "./Note.css";
 
 interface NoteContainerState {
+  position: {
+    left: string;
+    top: string;
+  };
   isEditable: boolean;
   editableName?: string;
   editableContent?: string;
@@ -25,6 +29,7 @@ interface NoteConnectedProps {
     content: string,
     priority: string
   ) => object;
+  transferTodo: (from: number, to: number, todo: number) => object;
 }
 
 interface NoteOwnProps {
@@ -39,6 +44,10 @@ class NoteContainer extends React.Component<
     super(props);
 
     this.state = {
+      position: {
+        left: "",
+        top: ""
+      },
       isEditable: false
     };
   }
@@ -58,9 +67,52 @@ class NoteContainer extends React.Component<
     });
   };
 
+  dragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.className == "todo-item") {
+      const parent = target.parentElement.parentElement;
+      const data = { id: target.id, parentId: parent.id };
+      e.dataTransfer.setData("element_id", JSON.stringify(data));
+    } else {
+      e.dataTransfer.setData("element_id", target.id);
+    }
+
+    setTimeout(() => {
+      target.style.display = "none";
+    }, 0);
+  };
+
+  dragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  drop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const moveData = JSON.parse(e.dataTransfer.getData("element_id"));
+
+    const element = document.getElementById(moveData.id);
+    const parent = document.getElementById(moveData.parentId);
+
+    const from = parent.getAttribute("data-storeid");
+    const to = this.props.noteData.id;
+    const todo = element.getAttribute("data-storeid");
+
+    if (element.className == "todo-item") {
+      this.props.transferTodo(parseInt(from), to, parseInt(todo));
+    }
+  };
+
   render() {
     return (
-      <div className="note-wrapper">
+      <div
+        id={`note-${this.props.noteData.id.toString()}`}
+        data-storeid={this.props.noteData.id}
+        className="note-wrapper"
+        onDragStart={this.dragStart}
+        onDragOver={this.dragOver}
+        onDrop={this.drop}
+        draggable="true"
+      >
         <NoteTitle
           onClick={this.handleTitleOnClick}
           title={this.props.noteData.title}
@@ -90,6 +142,11 @@ const MapDispatchToProps = (dispatch: Dispatch<MyTypes.RootAction>) => ({
     dispatch({
       type: actionTypes.ADD,
       payload: { id, name, content, priority }
+    }),
+  transferTodo: (from: number, to: number, todo: number) =>
+    dispatch({
+      type: actionTypes.TRANSFER,
+      payload: { from, to, todo }
     })
 });
 

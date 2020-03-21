@@ -4,7 +4,7 @@
   left: 2%; 
 
   width: 220px;  
-
+  max-height: 350px;
   /* border-radius: 20%; 
   border: 1px solid white; */
 
@@ -19,4 +19,4 @@
 .note-title{grid-area: note-title;}
 .todo-list{grid-area: todo-list;}
 .add-todo-button{grid-area: add-todo-button}
-.note-footer{grid-area: note-footer;}
+.note-footer{grid-area: note-footer;}  

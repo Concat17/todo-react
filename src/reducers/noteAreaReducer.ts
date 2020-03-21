@@ -65,6 +65,41 @@ export const noteAreaReducer = (
         return note;
       });
     }
+    case actionTypes.TRANSFER: {
+      console.log("tranfer");
+      const noteFrom = state.filter(note => note.id === action.payload.from)[0];
+      const todo = noteFrom.todos.filter(
+        todo => todo.id == action.payload.todo
+      )[0];
+
+      const newState = [...state].map(note => {
+        if (note.id === action.payload.from) {
+          return {
+            id: note.id,
+            title: note.title,
+            todos: note.todos.filter(todo => todo.id !== action.payload.todo)
+          };
+        }
+        if (note.id === action.payload.to) {
+          return {
+            id: note.id,
+            title: note.title,
+            todos: [
+              ...note.todos,
+              {
+                id: note.todos[note.todos.length - 1].id + 1,
+                name: todo.name,
+                content: todo.content,
+                priority: todo.priority
+              }
+            ]
+          };
+        }
+        return note;
+      });
+
+      return newState;
+    }
     default: {
       return state;
     }
