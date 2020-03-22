@@ -32,6 +32,7 @@ const TodoItem: React.FunctionComponent<TodoItemProps> = (
     <div
       id={`todo-${props.id}`}
       data-storeid={props.id}
+      data-candrop="true"
       className="todo-item"
       draggable="true"
       onDragStart={dragStart}

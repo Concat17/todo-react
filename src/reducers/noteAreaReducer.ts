@@ -45,7 +45,7 @@ export const noteAreaReducer = (
   action: MyTypes.RootAction
 ) => {
   switch (action.type) {
-    case actionTypes.ADD: {
+    case actionTypes.ADDTODO: {
       return [...state].map(note => {
         if (note.id === action.payload.id) {
           return {
@@ -69,7 +69,7 @@ export const noteAreaReducer = (
       console.log("tranfer");
       const noteFrom = state.filter(note => note.id === action.payload.from)[0];
       const todo = noteFrom.todos.filter(
-        todo => todo.id == action.payload.todo
+        todo => todo.id === action.payload.todo
       )[0];
 
       const newState = [...state].map(note => {
@@ -87,7 +87,10 @@ export const noteAreaReducer = (
             todos: [
               ...note.todos,
               {
-                id: note.todos[note.todos.length - 1].id + 1,
+                id:
+                  note.todos.length > 0
+                    ? note.todos[note.todos.length - 1].id + 1
+                    : 1,
                 name: todo.name,
                 content: todo.content,
                 priority: todo.priority
@@ -96,6 +99,34 @@ export const noteAreaReducer = (
           };
         }
         return note;
+      });
+
+      return newState;
+    }
+    case actionTypes.ADDNOTE: {
+      // actually delete from previous note and create new note with dropped todo (I'm too lazy to split it in different methods XD)
+      const noteFrom = state.filter(
+        note => note.id === action.payload.noteId
+      )[0];
+      const todo = noteFrom.todos.filter(
+        todo => todo.id === action.payload.todoId
+      )[0];
+
+      const newState = [...state].map(note => {
+        if (note.id === action.payload.noteId) {
+          return {
+            id: note.id,
+            title: note.title,
+            todos: note.todos.filter(todo => todo.id !== action.payload.todoId)
+          };
+        }
+        return note;
+      });
+
+      newState.push({
+        id: state.length + 1,
+        title: "New Note",
+        todos: [todo]
       });
 
       return newState;

@@ -69,13 +69,17 @@ class NoteContainer extends React.Component<
 
   dragStart = (e: React.DragEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
-    if (target.className == "todo-item") {
-      const parent = target.parentElement.parentElement;
-      const data = { id: target.id, parentId: parent.id };
-      e.dataTransfer.setData("element_id", JSON.stringify(data));
-    } else {
-      e.dataTransfer.setData("element_id", target.id);
-    }
+    // if (target.className == "todo-item") {
+    //   const parent = target.parentElement.parentElement;
+    //   const data = { id: target.id, parentId: parent.id };
+    //   e.dataTransfer.setData("element_id", JSON.stringify(data));
+    // } else {
+    //   e.dataTransfer.setData("element_id", target.id);
+    // }
+
+    const parent = target.parentElement.parentElement;
+    const data = { id: target.id, parentId: parent.id };
+    e.dataTransfer.setData("element_id", JSON.stringify(data));
 
     setTimeout(() => {
       target.style.display = "none";
@@ -93,12 +97,13 @@ class NoteContainer extends React.Component<
     const element = document.getElementById(moveData.id);
     const parent = document.getElementById(moveData.parentId);
 
-    const from = parent.getAttribute("data-storeid");
+    const from = parseInt(parent.getAttribute("data-storeid"));
     const to = this.props.noteData.id;
-    const todo = element.getAttribute("data-storeid");
+    const todo = parseInt(element.getAttribute("data-storeid"));
 
     if (element.className == "todo-item") {
-      this.props.transferTodo(parseInt(from), to, parseInt(todo));
+      element.setAttribute("data-candrop", "false");
+      this.props.transferTodo(from, to, todo);
     }
   };
 
@@ -140,7 +145,7 @@ const MapStateToProps = (store: MyTypes.ReducerState, props: NoteOwnProps) => {
 const MapDispatchToProps = (dispatch: Dispatch<MyTypes.RootAction>) => ({
   addTodo: (id: number, name: string, content: string, priority: string) =>
     dispatch({
-      type: actionTypes.ADD,
+      type: actionTypes.ADDTODO,
       payload: { id, name, content, priority }
     }),
   transferTodo: (from: number, to: number, todo: number) =>
